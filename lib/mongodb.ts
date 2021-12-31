@@ -9,6 +9,9 @@ export async function connectToDatabase(): Promise<Db> {
     if (cachedDb) {
         return cachedDb;
     }
+    if (!uri) {
+        throw new Error('Please add your Mongo URI to .env.local')
+    }
     const client = await MongoClient.connect(uri, options);
     const db = await client.db("mflix");
 
