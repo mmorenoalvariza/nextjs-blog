@@ -2,11 +2,17 @@ import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
 import { getSortedPostsData } from '../lib/posts'
+import { connectToDatabase } from '../lib/mongodb'
 import Link from 'next/link'
 import Date from '../components/date'
+import { useEffect, useState } from 'react'
 
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData()
+  /*   let db = await connectToDatabase();
+    let movieCollection = db.collection('movies');
+    const count = await movieCollection.count();
+    console.log('mongoprops', db, count); */
   return {
     props: {
       allPostsData
@@ -15,6 +21,7 @@ export async function getStaticProps() {
 }
 
 export default function Home({ allPostsData }) {
+
   return (
     <Layout home>
       <Head>
