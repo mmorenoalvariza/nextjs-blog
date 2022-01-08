@@ -1,8 +1,7 @@
-import { getAllMovieIds, getMovie } from '../../lib/movies'
 import Head from 'next/head'
-import Date from '../../components/date'
-import utilStyles from '../../styles/utils.module.css'
 import Layout from '../../components/layout'
+import { MovieFC } from '../../components/MovieFC'
+import { getAllMovieIds, getMovie } from '../../lib/movies'
 
 export async function getStaticPaths() {
     const paths = await getAllMovieIds()
@@ -22,7 +21,8 @@ export async function getStaticProps({ params }) {
     }
 }
 
-export default function Movie({ movie }) {
+export default function ById({ movie }) {
+    console.log('movie', movie);
     return (
         <Layout>
             <Head>

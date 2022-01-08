@@ -7,7 +7,7 @@ import Link from 'next/link'
 import Date from '../components/date'
 import { BaseSyntheticEvent, useEffect, useState } from 'react'
 import Image from 'next/image'
-import { MovieFC } from '../components/Movie'
+import { MovieFC } from '../components/MovieFC'
 import { getAllPostIds } from '../lib/posts'
 
 type Props = {
