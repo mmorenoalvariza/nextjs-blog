@@ -27,7 +27,7 @@ export const getAllMovies = async () => {
     const dbmovies = (await (movieCollection.find({ year: 2020 }, { limit: 3, sort: { runtime: 'desc' } })).toArray()) as DBMovie[];
     const movies = dbmovies.filter(movie => movie.runtime && movie.plot && movie.title && movie.year)
         .map(mapMovie) as Movie[];
-    await new Promise(resolve => setTimeout(resolve, 6000));
+    // await new Promise(resolve => setTimeout(resolve, 6000));
     return movies;
 }
 
