@@ -1,18 +1,8 @@
-import { getAllMovieIds, getMovie } from '../../lib/movies'
-import Head from 'next/head'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import Date from '../../components/date'
-import utilStyles from '../../styles/utils.module.css'
-import Layout from '../../components/layout'
-import { FunctionComponent } from 'react';
-/* 
-export async function getStaticPaths() {
-    const paths = await getAllMovieIds()
-    return {
-        paths,
-        fallback: false
-    }
-} */
+import Head from 'next/head';
+import Layout from '../../components/layout';
+import { MovieFC } from '../../components/Movie';
+import { getMovie } from '../../lib/movies';
 
 export const getServerSideProps: GetServerSideProps = async ({ params, res }) => {
     res.setHeader(
@@ -28,19 +18,14 @@ export const getServerSideProps: GetServerSideProps = async ({ params, res }) =>
     }
 }
 
-export default function Movie({ movie }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function ById({ movie }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     return (
         <Layout>
             <Head>
                 <title>{movie.title}</title>
             </Head>
             <article>
-                <h1 className={utilStyles.headingXl}>{movie.title}</h1>
-                <div>{movie.plot}</div>
-                <div className={utilStyles.lightText}>
-                    {movie.year}
-                </div>
-                <div>{movie.runtime}</div>
+                <MovieFC movie={movie} path='ssp' />
             </article>
         </Layout>
     )
