@@ -1,22 +1,13 @@
 import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
-import { getSortedPostsData } from '../lib/posts'
+import { Movie } from '../lib/movies'
 import { connectToDatabase } from '../lib/mongodb'
 import Link from 'next/link'
 import Date from '../components/date'
 import { BaseSyntheticEvent, useEffect, useState } from 'react'
 import Image from 'next/image'
-
-type Movie = {
-    _id: string,
-    title: string,
-    year: number,
-    runtime: number,
-    plot: string,
-    poster: string,
-
-}
+import { MovieFC } from '../components/Movie'
 
 type Props = {
     movies: Movie[]
@@ -32,7 +23,7 @@ export async function getStaticProps() {
         .map(({ _id, title, year, runtime, plot }) => ({
             _id: _id.toString(), title, year, runtime, plot, poster: '/images/profile.jpg'
         })) as Movie[];
-
+    await new Promise(resolve => setTimeout(resolve, 4000));
     return {
         props: {
             movies
@@ -75,20 +66,12 @@ export default function Movies({ movies }: Props) {
                     <button type='submit'>Add movie</button>
                 </form>
             </section>
-            <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
-                <h2 className={utilStyles.headingLg}>Movies</h2>
-                <div>{movies.map(movie => (
-                    <div key={movie._id}>
-                        <div>{movie._id}</div>
-                        <div>{movie.title}</div>
-                        <div>{movie.year}</div>
-                        <div>{movie.runtime}</div>
-                        <div>{movie.plot}</div>
-                        <div>{movie.poster}</div>
-                        <Image src={movie.poster} width={100} height={100} />
-                    </div>
-                ))}</div>
-            </section>
+
+            <h2>Movies</h2>
+            <div style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row' }}>{movies.map(movie => (
+                <MovieFC key={movie._id} movie={movie} />
+            ))}</div>
+
         </Layout>
     )
 }

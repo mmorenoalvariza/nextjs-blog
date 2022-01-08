@@ -60,7 +60,7 @@ export default function Layout({ children, home }) {
                     </>
                 )}
             </header>
-            <main>{children}</main>
+            <main style={{ width: '900px', border: '1px solid black', padding: '10px' }}>{children}</main>
             {!home && (
                 <div className={styles.backToHome}>
                     <Link href="/">
