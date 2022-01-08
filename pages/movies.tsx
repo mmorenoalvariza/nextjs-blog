@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
-import { Movie } from '../lib/movies'
+import { COLLECTION, mapMovie, Movie } from '../lib/movies'
 import { connectToDatabase } from '../lib/mongodb'
 import Link from 'next/link'
 import Date from '../components/date'
@@ -15,14 +15,16 @@ type Props = {
 
 export async function getStaticProps() {
     let db = await connectToDatabase();
-    let movieCollection = db.collection('mflix');
+    let movieCollection = db.collection(COLLECTION);
     const count = await movieCollection.countDocuments();
     /* const movies2 = (await (movieCollection.find({}, { limit: 10 })).toArray()).map((movie) => movie.toJSON()); */
-    const movies = (await (movieCollection.find({ year: 1989 }, { limit: 10, sort: { runtime: 'desc' } })).toArray())
+    const movies = (await (movieCollection.find({ year: 1989 }, { limit: 100, sort: { runtime: 'desc' } })).toArray())
         .filter(movie => movie.runtime && movie.plot && movie.title && movie.year)
-        .map(({ _id, title, year, runtime, plot }) => ({
-            _id: _id.toString(), title, year, runtime, plot, poster: '/images/profile.jpg'
-        })) as Movie[];
+        .map(movie => {
+
+            return mapMovie(movie)
+        }) as Movie[];
+    //console.log(count, movies);
     await new Promise(resolve => setTimeout(resolve, 4000));
     return {
         props: {

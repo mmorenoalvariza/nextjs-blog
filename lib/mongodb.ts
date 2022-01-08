@@ -14,7 +14,7 @@ export async function connectToDatabase(): Promise<Db> {
     }
     const client = await MongoClient.connect(uri, options);
     const db = await client.db("mflix");
-
+    //console.log('collections', await (await db.collection('movies')).find({ year: 1989 }).toArray());
     cachedDb = db;
     return db;
 }

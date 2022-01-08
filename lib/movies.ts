@@ -10,10 +10,11 @@ export type Movie = {
     poster: string,
 
 }
+export const COLLECTION = 'movies';
 
 export async function getAllMovieIds() {
     let db = await connectToDatabase();
-    let movieCollection = db.collection('mflix');
+    let movieCollection = db.collection(COLLECTION);
     const movies = (await (movieCollection.find({ year: 1989 }, { limit: 10, sort: { runtime: 'desc' } })).toArray())
         .filter(movie => movie.runtime && movie.plot && movie.title && movie.year)
         .map(({ _id, title, year, runtime, plot }) => ({
@@ -44,14 +45,18 @@ export async function getAllMovieIds() {
 
 export async function getMovie(id) {
     let db = await connectToDatabase();
-    let movieCollection = db.collection('mflix');
+    let movieCollection = db.collection(COLLECTION);
     const _id = new ObjectId(id);
 
     const movie = await movieCollection.findOne({ _id });
     await new Promise(resolve => setTimeout(resolve, 6000));
-
+    console.log('getMovie', movie);
     return {
         id,
-        ...movie, _id: id
+        ...mapMovie(movie), _id: id
     }
 }
+
+export const mapMovie = ({ _id, title, year, runtime, plot }) => ({
+    _id: _id.toString(), title, year, runtime, plot, poster: '/images/profile.jpg'
+});
