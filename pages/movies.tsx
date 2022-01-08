@@ -1,27 +1,21 @@
 import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
-import { COLLECTION, DBMovie, mapMovie, Movie } from '../lib/movies'
+import { COLLECTION, DBMovie, getAllMovies, mapMovie, Movie } from '../lib/movies'
 import { connectToDatabase } from '../lib/mongodb'
 import Link from 'next/link'
 import Date from '../components/date'
 import { BaseSyntheticEvent, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { MovieFC } from '../components/Movie'
+import { getAllPostIds } from '../lib/posts'
 
 type Props = {
     movies: Movie[]
 }
 
 export async function getStaticProps() {
-    let db = await connectToDatabase();
-    let movieCollection = db.collection(COLLECTION);
-    const count = await movieCollection.countDocuments();
-    /* const movies2 = (await (movieCollection.find({}, { limit: 10 })).toArray()).map((movie) => movie.toJSON()); */
-    const dbmovies = (await (movieCollection.find({ year: 1989 }, { limit: 100, sort: { runtime: 'desc' } })).toArray()) as DBMovie[];
-    const movies = dbmovies.filter(movie => movie.runtime && movie.plot && movie.title && movie.year)
-        .map(mapMovie) as Movie[];
-
+    const movies = await getAllMovies();
     await new Promise(resolve => setTimeout(resolve, 4000));
     return {
         props: {

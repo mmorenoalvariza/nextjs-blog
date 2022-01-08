@@ -21,28 +21,19 @@ export type DBMovie = {
 }
 export const COLLECTION = 'movies';
 
-export async function getAllMovieIds() {
+export const getAllMovies = async () => {
     let db = await connectToDatabase();
     let movieCollection = db.collection(COLLECTION);
-    const movies = (await (movieCollection.find({ year: 1989 }, { limit: 10, sort: { runtime: 'desc' } })).toArray())
-        .filter(movie => movie.runtime && movie.plot && movie.title && movie.year)
-        .map(({ _id, title, year, runtime, plot }) => ({
-            _id: _id.toString(), title, year, runtime, plot, poster: '/images/profile.jpg'
-        })) as Movie[];
+    const dbmovies = (await (movieCollection.find({ year: 1989 }, { limit: 300, sort: { runtime: 'desc' } })).toArray()) as DBMovie[];
+    const movies = dbmovies.filter(movie => movie.runtime && movie.plot && movie.title && movie.year)
+        .map(mapMovie) as Movie[];
     await new Promise(resolve => setTimeout(resolve, 6000));
-    // Returns an array that looks like this:
-    // [
-    //   {
-    //     params: {
-    //       id: 'ssg-ssr'
-    //     }
-    //   },
-    //   {
-    //     params: {
-    //       id: 'pre-rendering'
-    //     }
-    //   }
-    // ]
+    return movies;
+}
+
+export async function getAllMovieIds() {
+    const movies = await getAllMovies();
+
     return movies.map(({ _id }) => {
         return {
             params: {
@@ -58,8 +49,7 @@ export async function getMovie(id) {
     const _id = new ObjectId(id);
 
     const movie = (await movieCollection.findOne({ _id })) as DBMovie;
-    await new Promise(resolve => setTimeout(resolve, 6000));
-    console.log('getMovie', movie);
+    await new Promise(resolve => setTimeout(resolve, 20));
     return {
         id,
         ...mapMovie(movie), _id: id
