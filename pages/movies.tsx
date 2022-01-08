@@ -60,7 +60,7 @@ export default function Movies({ movies }: Props) {
                 </form>
             </section>
 
-            <h2>Movies</h2>
+            <h2>Movies {movies.length}</h2>
             <div style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row' }}>{movies.map(movie => (
                 <MovieFC key={movie._id} movie={movie} />
             ))}</div>

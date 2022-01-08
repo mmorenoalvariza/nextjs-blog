@@ -7,7 +7,6 @@ export default async function handler(req, res) {
     if ('POST' === method) {
 
         const newMovie = await db.collection(COLLECTION).insertOne(body);
-        console.log(body, newMovie);
 
         res.status(201).json(newMovie);
     } else {
