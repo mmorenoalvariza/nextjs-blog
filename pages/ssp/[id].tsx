@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const movie = await getMovie(params.id)
-    await new Promise(resolve => setTimeout(resolve, 20000));
+    await new Promise(resolve => setTimeout(resolve, 10000));
     return {
         props: {
             movie
