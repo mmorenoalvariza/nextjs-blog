@@ -8,7 +8,7 @@ export async function getStaticPaths() {
     const paths = await getAllMovieIds()
     return {
         paths,
-        fallback: false
+        fallback: 'blocking'
     }
 }
 
@@ -17,7 +17,8 @@ export async function getStaticProps({ params }) {
     return {
         props: {
             movie
-        }
+        },
+        revalidate: 10,
     }
 }
 

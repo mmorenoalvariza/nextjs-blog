@@ -20,7 +20,8 @@ export async function getStaticProps() {
     return {
         props: {
             movies
-        }
+        },
+        revalidate: 10,
     }
 }
 
