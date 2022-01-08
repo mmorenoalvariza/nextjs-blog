@@ -67,7 +67,7 @@ export default function Layout({ children, home }: LayoutProps) {
             <main style={{ width: '900px', border: '1px solid black', padding: '10px' }}>{children}</main>
             {!home && (
                 <div className={styles.backToHome}>
-                    <Link href="/ssp">
+                    <Link href="/">
                         <a>← Back to home</a>
                     </Link>
                 </div>

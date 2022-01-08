@@ -52,7 +52,7 @@ export default function Movies({ movies }: Props) {
                     <label>Title</label>
                     <input type={'text'} name='title' defaultValue={'New Movie'} />
                     <label>Year</label>
-                    <input type={'number'} name='year' defaultValue={1989} />
+                    <input type={'number'} name='year' defaultValue={2020} />
                     <label>Runtime</label>
                     <input type={'number'} name='runtime' defaultValue={122} />
                     <label>Plot</label>
@@ -63,7 +63,7 @@ export default function Movies({ movies }: Props) {
 
             <h2>Movies {movies.length}</h2>
             <div style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row' }}>{movies.map(movie => (
-                <MovieFC key={movie._id} movie={movie} />
+                <MovieFC key={movie._id} movie={movie} path='movies' />
             ))}</div>
 
         </Layout>
