@@ -14,7 +14,11 @@ export async function getStaticPaths() {
     }
 } */
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params, res }) => {
+    res.setHeader(
+        'Cache-Control',
+        'public, s-maxage=20, stale-while-revalidate=59'
+    )
     const movie = await getMovie(params.id)
     await new Promise(resolve => setTimeout(resolve, 5000));
     return {
