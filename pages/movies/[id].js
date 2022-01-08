@@ -29,12 +29,7 @@ export default function Movie({ movie }) {
                 <title>{movie.title}</title>
             </Head>
             <article>
-                <h1 className={utilStyles.headingXl}>{movie.title}</h1>
-                <div>{movie.plot}</div>
-                <div className={utilStyles.lightText}>
-                    {movie.year}
-                </div>
-                <div>{movie.runtime}</div>
+                <MovieFC movie={movie} path='movies' />
             </article>
         </Layout>
     )
