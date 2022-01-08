@@ -14,7 +14,11 @@ type Props = {
     movies: Movie[]
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ res }) {
+    res.setHeader(
+        'Cache-Control',
+        'public, s-maxage=20, stale-while-revalidate=59'
+    )
     const movies = await getAllMovies();
     await new Promise(resolve => setTimeout(resolve, 4000));
     return {
