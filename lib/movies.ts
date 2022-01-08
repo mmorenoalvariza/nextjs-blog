@@ -1,8 +1,17 @@
-import { MongoAPIError, ObjectId } from 'mongodb';
+import { MongoAPIError, ObjectId, WithId } from 'mongodb';
 import { connectToDatabase } from './mongodb'
 
 export type Movie = {
     _id: string,
+    title: string,
+    year: number,
+    runtime: number,
+    plot: string,
+    poster: string,
+
+}
+export type DBMovie = {
+    _id: ObjectId,
     title: string,
     year: number,
     runtime: number,
@@ -48,7 +57,7 @@ export async function getMovie(id) {
     let movieCollection = db.collection(COLLECTION);
     const _id = new ObjectId(id);
 
-    const movie = await movieCollection.findOne({ _id });
+    const movie = (await movieCollection.findOne({ _id })) as DBMovie;
     await new Promise(resolve => setTimeout(resolve, 6000));
     console.log('getMovie', movie);
     return {
@@ -57,6 +66,6 @@ export async function getMovie(id) {
     }
 }
 
-export const mapMovie = ({ _id, title, year, runtime, plot }) => ({
+export const mapMovie = ({ _id, title, year, runtime, plot }: DBMovie) => ({
     _id: _id.toString(), title, year, runtime, plot, poster: '/images/profile.jpg'
 });

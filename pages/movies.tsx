@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
-import { COLLECTION, mapMovie, Movie } from '../lib/movies'
+import { COLLECTION, DBMovie, mapMovie, Movie } from '../lib/movies'
 import { connectToDatabase } from '../lib/mongodb'
 import Link from 'next/link'
 import Date from '../components/date'
@@ -18,13 +18,10 @@ export async function getStaticProps() {
     let movieCollection = db.collection(COLLECTION);
     const count = await movieCollection.countDocuments();
     /* const movies2 = (await (movieCollection.find({}, { limit: 10 })).toArray()).map((movie) => movie.toJSON()); */
-    const movies = (await (movieCollection.find({ year: 1989 }, { limit: 100, sort: { runtime: 'desc' } })).toArray())
-        .filter(movie => movie.runtime && movie.plot && movie.title && movie.year)
-        .map(movie => {
+    const dbmovies = (await (movieCollection.find({ year: 1989 }, { limit: 100, sort: { runtime: 'desc' } })).toArray()) as DBMovie[];
+    const movies = dbmovies.filter(movie => movie.runtime && movie.plot && movie.title && movie.year)
+        .map(mapMovie) as Movie[];
 
-            return mapMovie(movie)
-        }) as Movie[];
-    //console.log(count, movies);
     await new Promise(resolve => setTimeout(resolve, 4000));
     return {
         props: {
