@@ -3,11 +3,15 @@ import Image from 'next/image'
 import styles from './layout.module.css'
 import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
+import { ReactChild } from 'react'
 
 const name = 'Mariano Moreno Alvariza'
 export const siteTitle = 'Next.js Sample Website'
-
-export default function Layout({ children, home }) {
+type LayoutProps = {
+    children: JSX.Element[],
+    home?: boolean
+}
+export default function Layout({ children, home }: LayoutProps) {
     return (
         <div className={styles.container}>
             <Head>
@@ -60,7 +64,7 @@ export default function Layout({ children, home }) {
                     </>
                 )}
             </header>
-            <main>{children}</main>
+            <main style={{ width: '900px', border: '1px solid black', padding: '10px' }}>{children}</main>
             {!home && (
                 <div className={styles.backToHome}>
                     <Link href="/">

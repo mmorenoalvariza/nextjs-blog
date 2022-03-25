@@ -2,11 +2,17 @@ import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
 import { getSortedPostsData } from '../lib/posts'
+import { connectToDatabase } from '../lib/mongodb'
 import Link from 'next/link'
 import Date from '../components/date'
+import { useEffect, useState } from 'react'
 
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData()
+  /*   let db = await connectToDatabase();
+    let movieCollection = db.collection('movies');
+    const count = await movieCollection.count();
+    console.log('mongoprops', db, count); */
   return {
     props: {
       allPostsData
@@ -15,6 +21,7 @@ export async function getStaticProps() {
 }
 
 export default function Home({ allPostsData }) {
+
   return (
     <Layout home>
       <Head>
@@ -26,6 +33,12 @@ export default function Home({ allPostsData }) {
           (This is a sample website - you’ll be building a site like this on{' '}
           <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
         </p>
+      </section>
+      <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
+        <ul>
+          <li><Link href='movies'>Movies with static site generation</Link></li>
+          <li><Link href='ssp'>Movies With Server side rendering caching</Link></li>
+        </ul>
       </section>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
